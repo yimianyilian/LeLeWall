@@ -1,0 +1,103 @@
+E:\JavaDemo\leyou\leyou-manage-web
+
+npm run dev
+
+=============================================
+
+
+E:\JavaDemo\nginx-1.14.0
+
+start  nginx
+
+nginx -s reload  
+
+
+
+
+==========================================
+
+cd  /root/bin  
+./nginx
+
+
+service fdfs_trackerd start # 启动fdfs_trackerd服务，停止用stop
+
+ps -ef | grep fdfs_trackerd
+
+
+
+service fdfs_storaged start  # 启动fdfs_storaged服务，停止用stop
+
+========================================================
+
+npm install -g live-server
+
+live-server  --port=9002
+
+=====================================================
+
+C:\Windows\System32\drivers\etc\hosts
+
+=======================================================
+
+
+su - leyou
+
+cd  /home/leyou/elasticsearch/bin
+./elasticsearch
+
+===============================================
+
+
+
+H:\BaiduNetdiskDownload\23630\09 微服务电商【黑马乐优商城】\乐优商城-11月版\leyou\day11-elasticsearch\资料\kibana-6.3.0-windows-x86_64\bin
+
+双击  kibana.bat
+
+
+http://localhost:5601
+
+
+GET /goods/_search
+{
+  "size" :0 ,
+   "aggs" :{
+      "brands" :{
+
+         "terms" :{
+             "field" :"brandId"
+
+          }
+
+    } 
+    
+   }
+
+}
+
+GET /goods/_search
+{
+  "size" :0 ,
+   "aggs" :{
+      "categories" :{
+
+         "terms" :{
+             "field" :"cid3"
+
+          }
+
+    } 
+    
+   }
+
+}
+
+Long 不能分词  
+
+text类型可以分词   
+
+size :0  不返回普通结果集  返回聚合结果集
+
+
+===========================================
+

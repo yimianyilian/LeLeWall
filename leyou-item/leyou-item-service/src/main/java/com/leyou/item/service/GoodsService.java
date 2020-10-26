@@ -8,10 +8,13 @@ import com.leyou.item.bo.SpuBo;
 import com.leyou.item.mapper.*;
 import com.leyou.item.pojo.*;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Arrays;
@@ -35,6 +38,8 @@ public class GoodsService {
 
     @Autowired
     private StockMapper stockMapper;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     //http://localhost:8081/spu/page?page=1&rows=100
     public PageResult<SpuBo> querySpuByPage(String key, Boolean saleable, Integer page, Integer rows) {
@@ -111,11 +116,18 @@ public class GoodsService {
             this.stockMapper.insertSelective(stock);
         });
         // this.skuMapper.insertList(skus);
-
+        sendMsg("insert",spuBo.getId());
 
     }
 
 
+    private  void sendMsg(String type,Long id){
+        try {
+            this.amqpTemplate.convertAndSend("item."+ type,id);
+        } catch (AmqpException e) {
+            e.printStackTrace();
+        }
+    }
     //根据主键查询 spudetail
     public SpuDetail querySpuDetailBySpuId(Long spuId) {
 
@@ -139,7 +151,64 @@ public class GoodsService {
     public Spu querySpuById(Long id) {
         return  this.spuMapper.selectByPrimaryKey(id);
 
-
-
     }
+
+
+    private void saveSkuAndStock(SpuBo spuBo){
+        spuBo.getSkus().forEach( sku -> {
+            //新增sku
+            sku.setSpuId(spuBo.getId());
+            sku.setCreateTime(new Date());
+            sku.setLastUpdateTime(sku.getCreateTime());
+            this.skuMapper.insertSelective(sku);
+
+            //新增库存
+            Stock stock = new Stock();
+            stock.setSkuId(sku.getId());
+            stock.setStock(sku.getStock());
+            this.stockMapper.insertSelective(stock);
+        });
+    }
+
+    @Transactional
+    public void updateGoods(SpuBo spuBo){
+        //查询以前sku
+        List<Sku> skus = this.querySkusBySpuId(spuBo.getId());
+        //如果以前存在，则删除
+        if (!CollectionUtils.isEmpty(skus)){
+            List<Long> ids = skus.stream().map(s -> s.getId()).collect(Collectors.toList());
+            //删除以前的库存
+            Example example = new Example(Stock.class);
+            example.createCriteria().andIn("skuId", ids);
+            this.stockMapper.deleteByExample(example);
+
+            //删除以前的Sku
+            Sku record = new Sku();
+            record.setSpuId(spuBo.getId());
+            this.skuMapper.delete(record);
+        }
+
+        //新增sku和库存
+        saveSkuAndStock(spuBo);
+
+        //更新SPU
+        spuBo.setLastUpdateTime(new Date());
+        spuBo.setCreateTime(null);
+        spuBo.setValid(null);
+        spuBo.setSaleable(null);
+        this.spuMapper.updateByPrimaryKeySelective(spuBo);
+
+        //更新spu详情
+        this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
+
+        this.sendMsg( "update",spuBo.getId());
+    }
+
+
+    public Spu querySpuBySpuId(Long id){
+        return this.spuMapper.selectByPrimaryKey(id);
+    }
+
+
+
 }

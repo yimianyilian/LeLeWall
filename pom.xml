@@ -28,6 +28,7 @@
 
         <module>leyou-user/leyou-user-interface</module>
         <module>leyou-user/leyou-user-service</module>
+        <module>leyou-sms</module>
     </modules>
     <packaging>pom</packaging>
 

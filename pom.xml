@@ -24,6 +24,10 @@
         <module>leyou-elasticsearch</module>
         <module>leyou-search</module>
         <module>leyou-goods-web</module>
+        <module>leyou-user</module>
+
+        <module>leyou-user/leyou-user-interface</module>
+        <module>leyou-user/leyou-user-service</module>
     </modules>
     <packaging>pom</packaging>
 

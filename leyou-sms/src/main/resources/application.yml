@@ -1,14 +1,13 @@
 server:
-   port: 8086
-spring：
-   application:
-      name: sms-service
-rabbitmq:
-  host:  192.168.184.129
-  virtual-host: /leyou
-  username: leyou
-  password: leyou
-
+  port: 8086
+spring:
+  application:
+    name: sms-service
+  rabbitmq:
+    host: 192.168.184.129
+    virtual-host: leyou
+    username: leyou
+    password: leyou
 leyou:
   sms:
     accessKeyId: LTAI4GCzQz9wXm94KBzXvvjY # 你自己的accessKeyId

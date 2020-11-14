@@ -30,8 +30,7 @@
         <module>leyou-user/leyou-user-service</module>
         <module>leyou-sms</module>
         <module>leyou-auth</module>
-        <module>leyou-auth-common</module>
-        <module>leyou-auth-common</module>
+
     </modules>
     <packaging>pom</packaging>
 

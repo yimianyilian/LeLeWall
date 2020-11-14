@@ -24,6 +24,13 @@ public class LeyouCorsFilterConfiguration {
         corsConfiguration.setAllowCredentials(true);
         //允许所有请求方式跨域访问
         corsConfiguration.addAllowedMethod("*");//post get
+        corsConfiguration.addAllowedMethod("OPTIONS");
+        corsConfiguration.addAllowedMethod("HEAD");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("PUT");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.addAllowedMethod("PATCH");
         //允许携带所有头信息跨域访问
         corsConfiguration.addAllowedHeader("*");
 

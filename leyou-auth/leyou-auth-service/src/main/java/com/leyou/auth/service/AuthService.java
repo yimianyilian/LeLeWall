@@ -4,17 +4,13 @@ package com.leyou.auth.service;
 import com.leyou.auth.client.UserClient;
 import com.leyou.auth.config.JwtProperties;
 import com.leyou.common.pojo.UserInfo;
-import com.leyou.common.utils.CookieUtils;
+
 import com.leyou.common.utils.JwtUtils;
 import com.leyou.userservice.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class AuthService {

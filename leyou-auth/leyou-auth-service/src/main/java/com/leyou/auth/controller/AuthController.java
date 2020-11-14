@@ -26,12 +26,15 @@ public class AuthController {
     @Autowired
     private JwtProperties jwtProperties;
 
+
+    //http://api.leyou.com/api/auth/accredit?username=liuyan&password=123456
     @PostMapping("accredit")
     public ResponseEntity<Void> accredit(@RequestParam("username")String username,
                                          @RequestParam("password")String password,
                                          HttpServletRequest request,
                                          HttpServletResponse response){
         String token =   this.authService.accredit(username,password);
+       // System.out.println("token:"+token);
       if(StringUtils.isBlank(token)){
           //401  httpcode
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -30,6 +30,7 @@
         <module>leyou-user/leyou-user-service</module>
         <module>leyou-sms</module>
         <module>leyou-auth</module>
+        <module>leyou-cart</module>
 
     </modules>
     <packaging>pom</packaging>

@@ -244,8 +244,8 @@
 								<div class="control-group">
 									<div class="controls">
 										<input autocomplete="off" type="text" disabled value="1" minnum="1" class="itxt" />
-										<a href="javascript:void(0)" class="increment plus">+</a>
-										<a href="javascript:void(0)" class="increment mins">-</a>
+										<a href="javascript:void(0)" class="increment plus"  >+</a>
+										<a href="javascript:void(0)" class="increment mins" >-</a>
 									</div>
 								</div>
 							</div>
@@ -303,7 +303,7 @@
 										</strong>
 										</div>
 										<div class="operate">
-											<a href="javascript:void(0);" class="sui-btn btn-bordered">加入购物车</a>
+											<a href="javascript:void(0);"  target="_blank"  @click="addCart()"  class="sui-btn btn-bordered">加入购物车</a>
 										</div>
 									</div>
 								</li>
@@ -670,7 +670,7 @@
 <script src="/js/vue/vue.js"></script>
 <script src="/js/axios.min.js"></script>
 <script src="/js/common.js"></script>
-
+ 
 <script>
     var itemVm = new Vue({
         el:"#itemApp",
@@ -678,6 +678,11 @@
         },
         components:{
             lyTop: () => import('/js/pages/top.js')
+        },
+        methods:{
+        	addCart(){
+
+        	}
         }
     });
 </script>

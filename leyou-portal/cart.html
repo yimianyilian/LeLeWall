@@ -96,7 +96,7 @@
                         <span><em>已节省：</em><i>-¥20.00</i></span>
                     </div>
                     <div class="sumbtn">
-                        <a class="sum-btn"  href="getOrderInfo.html"  target="_blank">结算</a>
+                        <a class="sum-btn"  href="javascript:void(0);"  @click="toOrder()"  target="_blank">结算</a>
                     </div>
                 </div>
             </div>
@@ -276,9 +276,14 @@
         created(){
            ly.verify().then(res=>{
                  // 已登录
-                    ly.http.post("/cart").then(({data})=>{
+                    ly.http.get("/cart").then(({data})=>{
                         this.carts = data;
-                        this.selected = data;
+                        this.selected = this.carts;  
+                        //{data}   解构数据   直接获取 res.data
+                        //console.log(res);用于测试 查看获取到的数据 
+                        //console.log("res:"+res) 这样获取到的是转化为string  OBjecT查看不要结果
+
+
                     })
                
            }).catch(()=>{
@@ -308,9 +313,25 @@
 
         },
         methods: {
+            toOrder(){
+             ly.verify().then(res=>{
+               ly.store.set("LY_SELECTED",this.selected);
+               window.location= "http://www.leyou.com/getOrderInfo.html";
+
+
+           }).catch(()=>{
+              window.location="http://www.leyou.com/login.html?returnUrl=http://www.leyou.com/cart.html";
+
+
+           })
+           
+            },
+
+
            incr(cart){
               cart.num++; 
                 ly.verify().then(res=>{
+                    ly.http.put("/cart", {skuId:cart.skuId,num:cart.num });
 
 
            }).catch(()=>{
@@ -325,7 +346,7 @@
                 cart.num-- ;
             }
             ly.verify().then(res=>{
-
+                     ly.http.put("/cart", {skuId:cart.skuId,num:cart.num });
 
            }).catch(()=>{
              //未登录购物车的查询

@@ -269,45 +269,6 @@
            methods:{
              submit(){
 
-   //     ly.verify().then(({data})=>{
-/*               	const address = this.addresses[this.selectedAddress];
-                    let  addr={
-                     "receiver": address.name,
-                     "receiverMobile": address.phone,
-                      "receiverState": address.state,
-                      "receiverCity": address.city,
-                     "receiverDistrict":address.district,
-                      "receiverAddress": address.address,
-                     "receiverZip": address.zipCode,
-                    "invoiceType": 0,
-                   "sourceType":2  };
-
-                 const orderDetails = this.carts;
-
-                 //  拼凑 order对象  将addr orderDetail等加入进去
-               /*  Object.assgin(this.order,addr,orderDetail,{totalPay: this.totalPrice,actualPay:this.actualPrice, buyerMessage : null});*/
-/*                  this.order ={
-                      "receiver": address.name,
-                     "receiverMobile": address.phone,
-                      "receiverState": address.state,
-                      "receiverCity": address.city,
-                     "receiverDistrict":address.district,
-                      "receiverAddress": address.address,
-                     "receiverZip": address.zipCode,
-                    "invoiceType": 0,
-                   "sourceType":2  ,orderDetails,
-                     "totalPay": this.totalPrice,"actualPay":this.actualPrice, "buyerMessage" : null
-                  };
-                  console.log(this.order);
-
-
-                   ly.http.post("/order/order",this.order).then(({data})=>{
-                      console.log(data);
-                   })*/
-
-
-
-
                    		// 把购物车数据处理成订单详情
 					const orderDetails = {orderDetails: this.carts};
 					// 处理物流信息
@@ -330,18 +291,22 @@
 						buyerMessage: null 
 					});
 					// 提交订单
-					ly.http.post("/order/order", this.order).then(({data})=>{
-                       console.log(data);
+					ly.http.post("/order/order", this.order,{
+								transformResponse: [
+									function(data){
+										return data;
+									}   //让其直接返回  响应的字符串
+								]
+							}).then(({data})=>{
+                       //console.log(data);
+
+  //前端发送给后端全部都是字符串     后端返回的是 LONG 转化为 前端发送给后端 的是字符串   让它不做这样的转化
+
+                       window.location ="http://www.leyou.com/pay.html?orderId=" + data;
+					}).catch(()=>{
+						window.location ="http://www.leyou.com/login.html?returnUrl=http://www.leyou.com/getOrderInfo.html"; 
 					})
-							
-
-					/*		.then(({data}) => {
-						// 在线支付，需要到付款页
-						console.log( data);}*/
-			
-
-
-
+					
 			}
 		}
 
@@ -349,12 +314,7 @@
 
 
 
-        
-    /*     }).catch(()=>{
-              	window.location="http://www.leyou.com/login.html?returnUrl=http://www.leyou.com/cart.html";  
-                 })*/
-
-
+       
 	</script>
 
 	<!-- 底部栏位 -->
